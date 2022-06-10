@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 
 class EmployeeController extends Controller
 {
@@ -18,15 +19,17 @@ class EmployeeController extends Controller
     }
 
     public function list() {
-        return "TODO: Retrieve a list of employees";
-    }
+        $employees = Employee::all();
 
-    public function get(Request $request, $employeeId) {
-        return "TODO: retrieve a employee with ID $employeeId";
+        return response()->json($employees);
     }
 
     public function create(Request $request) {
         return "TODO: create an user";
+    }
+
+    public function get(Request $request, $employeeId) {
+        return "TODO: retrieve a employee with ID $employeeId";
     }
 
     public function edit(Request $request, $employeeId) {
