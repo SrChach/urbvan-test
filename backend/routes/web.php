@@ -24,7 +24,7 @@ $router->group(
         $router->get('/{employeeId}', 'EmployeeController@get');
 
         $router->post('/', 'EmployeeController@create');
-        $router->put('/{employeeId}', 'EmployeeController@edit');
+        $router->put('/{employeeId}', 'EmployeeController@update');
         $router->delete('/{employeeId}', 'EmployeeController@delete');
     }
 );

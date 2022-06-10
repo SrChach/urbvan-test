@@ -25,19 +25,53 @@ class EmployeeController extends Controller
     }
 
     public function create(Request $request) {
-        return "TODO: create an user";
+        $this->validateEmployee($request);
+
+        $employee = new Employee([
+            'name' => $request->input('name'),
+            'last_name' => $request->input('last_name')
+        ]);
+
+        $employee->save();
+
+        return response()->json($employee);
     }
 
     public function get(Request $request, $employeeId) {
-        return "TODO: retrieve a employee with ID $employeeId";
+        $employee = Employee::find($employeeId);
+        if (!$employee) return response([ 'message' => 'This employee does not exist' ], 404);
+
+        return response()->json($employee);
     }
 
-    public function edit(Request $request, $employeeId) {
-        return "TODO: Edit an user with ID $employeeId";
+    public function update(Request $request, $employeeId) {
+        $this->validateEmployee($request);
+
+        $employee = Employee::find($employeeId);
+        if (!$employee) return response([ 'message' => 'This employee does not exist' ], 404);
+
+        $employee->name = $request->input('name');
+        $employee->last_name = $request->input('last_name');
+
+        $employee->save();
+
+        return response()->json($employee);
     }
 
     public function delete(Request $request, $employeeId) {
-        return "TODO: Delete an user with ID $employeeId";
+        $employee = Employee::find($employeeId);
+        if (!$employee) return response([ 'message' => 'This employee does not exist' ], 404);
+
+        $employee->delete();
+
+        return response()->json('Employee deleted');
+    }
+
+    public function validateEmployee(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'last_name' => 'required|string'
+        ]);
     }
 
 }
