@@ -16,3 +16,15 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(
+    [ 'namespace' => 'V1', 'prefix' => 'v1/employees' ],
+    function () use ($router) {
+        $router->get('/', 'EmployeeController@list');
+        $router->get('/{employeeId}', 'EmployeeController@get');
+
+        $router->post('/', 'EmployeeController@create');
+        $router->put('/{employeeId}', 'EmployeeController@edit');
+        $router->delete('/{employeeId}', 'EmployeeController@delete');
+    }
+);
