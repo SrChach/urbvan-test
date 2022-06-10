@@ -1,12 +1,41 @@
 <script setup>
-import EmployeeList from '@/components/EmployeeList.vue';
 import EditEmployee from '@/components/EditEmployee.vue';
+import EmployeeData from '@/components/EmployeeData.vue'
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      employees: [],
+    };
+  },
+  mounted() {
+    this.getEmployees();
+  },
+  methods: {
+    async getEmployees() {
+      const response = await fetch('http://localhost:8000/v1/employees');
+      const employees = await response.json();
+      
+      this.employees = employees;
+      return employees;
+    }
+  }
+}
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <EmployeeList />
+      <div class="greetings">
+        <h1 class="green">Employees Management</h1>
+        <h3>
+          <div v-for="(employee, index) in employees">
+            <EmployeeData :employee="employee"/>
+          </div>
+        </h3>
+      </div>
     </div>
   </header>
 
