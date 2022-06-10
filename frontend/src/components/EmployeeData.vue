@@ -1,13 +1,29 @@
+<script setup>
+import EcosystemIcon from '@/components/icons/IconEcosystem.vue';
+
+defineProps({
+  employee: {
+    type: Object,
+    required: true,
+    default: () => ({}),
+  }
+})
+</script>
+
 <template>
   <div class="item">
     <i>
-      <slot name="icon"></slot>
+      <EcosystemIcon />
     </i>
     <div class="details">
       <h3>
-        <slot name="heading"></slot>
+        Employee Number: {{ employee.id }}
       </h3>
-      <slot></slot>
+
+      {{ employee.name }} {{ employee.last_name }} is a good employee from the company
+      Vue’s
+      <a target="_blank" href="https://vuejs.org/">official documentation</a>
+      provides you with all information you need to get started.
     </div>
   </div>
 </template>
