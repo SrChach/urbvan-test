@@ -18,7 +18,9 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(
-    [ 'namespace' => 'V1', 'prefix' => 'v1/employees' ],
+    [
+        'namespace' => 'V1', 'prefix' => 'v1/employees', 'middleware' => ['cors']
+    ],
     function () use ($router) {
         $router->get('/', 'EmployeeController@list');
         $router->get('/{employeeId}', 'EmployeeController@get');
