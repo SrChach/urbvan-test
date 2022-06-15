@@ -4,7 +4,25 @@ Esta es la evaluacion tecnica para Urvban. Lo gestionare todo en un monorepo con
 
 Ambas serán carpetas dentro de este proyecto
 
-## Pasos
+## Instrucciones de uso
+
+Se requiere tener NodeJS instalado, asi como PHP y Composer. La dockerizacion de la App está pendiente.
+
+Para el Backend:
+
+- Ir a la carpeta "Backend"
+- Ejecutar "Composer install"
+- Ejecutar `php artisan migrate`
+- Correr con `php -S localhost:<PORT> -t public`
+
+Para el Frontend:
+
+- Ir a la carpeta "Frontend"
+- Ejecutar `npm install`
+- En el archivo 'frontend/src/requests/custom-axios.js' cambiar la `baseURL`, apuntando a donde tenemos corriendo la API (por ejemplo, http://localhost:8000/v1)
+- correr con `npm run dev`
+
+## Pasos seguidos
 
 ### backend
 
