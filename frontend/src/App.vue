@@ -1,6 +1,8 @@
 <script setup>
 import EditEmployee from '@/components/EditEmployee.vue';
-import EmployeeData from '@/components/EmployeeData.vue'
+import EmployeeData from '@/components/EmployeeData.vue';
+
+import { getEmployees as requestEmployees } from './requests/employee';
 </script>
 
 <script>
@@ -8,6 +10,8 @@ export default {
   data() {
     return {
       employees: [],
+      employeeToUpdate: null,
+      isAddingEmployee: false
     };
   },
   mounted() {
@@ -15,11 +19,17 @@ export default {
   },
   methods: {
     async getEmployees() {
-      const response = await fetch('http://localhost:8000/v1/employees');
-      const employees = await response.json();
-      
-      this.employees = employees;
-      return employees;
+      this.employees = await requestEmployees();
+      this.employeeToUpdate = null;
+      this.isAddingEmployee = false;
+    },
+    selectEmployeeToUpdate(employeeId) {
+      this.employeeToUpdate = this.employees.find(employee => employee.id === employeeId);
+      this.isAddingEmployee = false;
+    },
+    showAddEmployeeForm() {
+      this.employeeToUpdate = null;
+      this.isAddingEmployee = true;
     }
   }
 }
@@ -29,17 +39,41 @@ export default {
   <header>
     <div class="wrapper">
       <div class="greetings">
-        <h1 class="green">Employees Management</h1>
-        <h3>
+        <br><br><br><br><br>
+        <h1 class="green">
+          Employees Management
+          <button @click="showAddEmployeeForm">Add</button>
+        </h1>
+        <div>
           <div v-for="(employee, index) in employees">
-            <EmployeeData :employee="employee"/>
+            <EmployeeData
+              :employee="employee"
+              @deleted-employee="getEmployees"
+              @select-employee="selectEmployeeToUpdate"
+            />
           </div>
-        </h3>
+        </div>
       </div>
     </div>
   </header>
 
-  <EditEmployee />
+  <header>
+    <div v-if="employeeToUpdate">
+      <EditEmployee
+        :id="employeeToUpdate.id"
+        :name="employeeToUpdate.name"
+        :last_name="employeeToUpdate.last_name"
+        @updated-employee="getEmployees"
+        @cancel="employeeToUpdate = null"
+      />
+    </div>
+    <div v-if="isAddingEmployee">
+      <EditEmployee
+        @updated-employee="getEmployees"
+        @cancel="isAddingEmployee = false"
+      />
+    </div>
+  </header>
 </template>
 
 <style>
@@ -55,7 +89,8 @@ export default {
 
 header {
   line-height: 1.5;
-  max-height: 100vh;
+  max-height: 80vh;
+  overflow-y: scroll;
 }
 
 .logo {

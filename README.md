@@ -21,3 +21,7 @@ composer create-project --prefer-dist laravel/lumen backend
 ``` bash
 npm init vue@latest
 ```
+
+### To do
+
+Pending finishing the docs

@@ -1,5 +1,6 @@
 <script setup>
 import EcosystemIcon from '@/components/icons/IconEcosystem.vue';
+import axios from '../requests/custom-axios';
 
 defineProps({
   employee: {
@@ -8,6 +9,22 @@ defineProps({
     default: () => ({}),
   }
 })
+
+const emit = defineEmits(['deleted-employee', 'select-employee']);
+
+function deletedEmployee() {
+  emit('deleted-employee');
+}
+
+function selectEmployee(employeeId) {
+  emit('select-employee', employeeId);
+}
+
+async function deleteEmployee(employeeId) {
+  let { status } = await axios.delete(`/employees/${employeeId}`);
+
+  if (status == 200) deletedEmployee();
+}
 </script>
 
 <template>
@@ -20,10 +37,10 @@ defineProps({
         Employee Number: {{ employee.id }}
       </h3>
 
-      {{ employee.name }} {{ employee.last_name }} is a good employee from the company
-      Vue’s
-      <a target="_blank" href="https://vuejs.org/">official documentation</a>
-      provides you with all information you need to get started.
+      <b>{{ employee.name }} {{ employee.last_name }}</b> is a good employee from the Urbvan company <br>
+
+      <button @click="deleteEmployee(employee.id)">delete</button>
+      <button @click="selectEmployee(employee.id)">Update</button>
     </div>
   </div>
 </template>
